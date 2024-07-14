@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawaii Tax Calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #results {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hawaii Tax Calculator</h1>
+    <input type="file" id="csvFile" accept=".csv">
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('csvFile').addEventListener('change', handleFileSelect, false);
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            
+            Papa.parse(file, {
+                complete: function(results) {
+                    calculateTaxes(results.data);
+                }
+            });
+        }
+
+        function calculateTaxes(data) {
+            let getTotalRevenue = 0;
+            let tatTotalRevenue = 0;
+            let cleaningFees = 0;
+
+            data.forEach(row => {
+                if (row[2] === 'Reservation') {
+                    getTotalRevenue += parseFloat(row[12]) || 0;
+                    tatTotalRevenue += parseFloat(row[12]) || 0;
+                    cleaningFees += parseFloat(row[17]) || 0;
+                } else if (row[2] === 'Pass Through Tot') {
+                    getTotalRevenue += parseFloat(row[12]) || 0;
+                }
+            });
+
+            tatTotalRevenue -= cleaningFees;
+
+            document.getElementById('results').innerHTML = `
+                GET Total Revenue: $${getTotalRevenue.toFixed(2)}<br>
+                TAT Total Revenue: $${tatTotalRevenue.toFixed(2)}
+            `;
+        }
+    </script>
+</body>
+</html>
