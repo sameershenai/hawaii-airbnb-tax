@@ -20,11 +20,11 @@
                 rows.forEach(row => {
                     const columns = row.split(',');
                     if (columns.length > 1) {
-                        const type = columns[3];
-                        const amount = parseFloat(columns[14]) || 0;
-                        const cleaningFee = parseFloat(columns[18]) || 0;
-                        const serviceFee = parseFloat(columns[16]) || 0;
-                        const payout = parseFloat(columns[15]) || 0;
+                        const type = columns[2];
+                        const amount = parseFloat(columns[13]) || 0;
+                        const cleaningFee = parseFloat(columns[17]) || 0;
+                        const serviceFee = parseFloat(columns[15]) || 0;
+                        const payout = parseFloat(columns[14]) || 0;
                         
                         if (type === "Reservation") {
                             tatRevenue += amount + cleaningFee - serviceFee;
