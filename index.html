@@ -20,12 +20,17 @@
                 rows.forEach(row => {
                     const columns = row.split(',');
                     if (columns.length > 1) {
-                        const reservation = parseFloat(columns[13]) || 0;
-                        const guestTaxes = parseFloat(columns[19]) || 0;
-                        const cleaningFees = parseFloat(columns[18]) || 0;
+                        const type = columns[3];
+                        const amount = parseFloat(columns[14]) || 0;
+                        const cleaningFee = parseFloat(columns[18]) || 0;
+                        const serviceFee = parseFloat(columns[16]) || 0;
+                        const payout = parseFloat(columns[15]) || 0;
                         
-                        getRevenue += reservation + guestTaxes + cleaningFees;
-                        tatRevenue += reservation + cleaningFees;
+                        if (type === "Reservation") {
+                            tatRevenue += amount + cleaningFee - serviceFee;
+                        }
+                        
+                        getRevenue += payout;
                     }
                 });
 
