@@ -41,6 +41,20 @@
 </head>
 <body>
     <h1>Airbnb Earnings Report</h1>
+    <section>
+        <h2>Instructions</h2>
+        <ol>
+            <li>Navigate to <a href="https://www.airbnb.com/users/transaction_history" target="_blank">Airbnb Transaction History</a>.</li>
+            <li>Download the payout report for the period you want to file taxes for (Month, quarter, etc).</li>
+            <li>Upload the report spreadsheet below to get the total revenue for GET and TAT.</li>
+            <li>Go to <a href="https://hitax.hawaii.gov/" target="_blank">Hawaii Tax Online</a> and enter the GET revenue in the GET section and the TAT revenue in the TAT section.</li>
+        </ol>
+        <p>Here is how GET and TAT revenues are calculated:</p>
+        <ul>
+            <li><strong>GET Revenue</strong> is the total of the "Paid out" amounts.</li>
+            <li><strong>TAT Revenue</strong> is calculated as: <code>Amount + Cleaning Fee - Service Fee</code> for rows where Type is "Reservation".</li>
+        </ul>
+    </section>
     <input type="file" id="fileInput" accept=".csv">
     <button onclick="calculateRevenue()">Calculate Revenue</button>
     <div id="results">
