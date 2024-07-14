@@ -29,8 +29,9 @@
                         if (type === "Reservation") {
                             tatRevenue += amount + cleaningFee - serviceFee;
                         }
-                        
-                        getRevenue += payout;
+                        if(type == "Payout") {
+                            getRevenue += payout;
+                        }
                     }
                 });
 
