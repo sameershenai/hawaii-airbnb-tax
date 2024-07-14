@@ -4,42 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Airbnb Earnings Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
         function calculateRevenue() {
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(event) {
-                const data = event.target.result;
-                const rows = data.split('\n').slice(1);
-                
-                let getRevenue = 0;
-                let tatRevenue = 0;
 
-                rows.forEach(row => {
-                    const columns = row.split(',');
-                    if (columns.length > 1) {
-                        const type = columns[2];
-                        const amount = parseFloat(columns[13]) || 0;
-                        const cleaningFee = parseFloat(columns[17]) || 0;
-                        const serviceFee = parseFloat(columns[15]) || 0;
-                        const payout = parseFloat(columns[14]) || 0;
-                        
+            Papa.parse(file, {
+                header: true,
+                dynamicTyping: true,
+                complete: function(results) {
+                    const data = results.data;
+                    let getRevenue = 0;
+                    let tatRevenue = 0;
+
+                    data.forEach(row => {
+                        const type = row['Type'];
+                        const amount = row['Amount'] || 0;
+                        const serviceFee = row['Service fee'] || 0;
+                        const cleaningFee = row['Cleaning fee'] || 0;
+                        const payout = row['Paid out'] || 0;
+
                         if (type === "Reservation") {
                             tatRevenue += amount + cleaningFee - serviceFee;
                         }
-                        if(type == "Payout") {
-                            getRevenue += payout;
-                        }
-                    }
-                });
 
-                document.getElementById('getRevenue').innerText = `GET Revenue: $${getRevenue.toFixed(2)}`;
-                document.getElementById('tatRevenue').innerText = `TAT Revenue: $${tatRevenue.toFixed(2)}`;
-            };
-            
-            reader.readAsText(file);
+                        getRevenue += payout;
+                    });
+
+                    document.getElementById('getRevenue').innerText = `GET Revenue: $${getRevenue.toFixed(2)}`;
+                    document.getElementById('tatRevenue').innerText = `TAT Revenue: $${tatRevenue.toFixed(2)}`;
+                }
+            });
         }
     </script>
 </head>
